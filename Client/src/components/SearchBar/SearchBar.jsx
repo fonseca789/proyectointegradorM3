@@ -11,9 +11,9 @@ export default function SearchBar({onSearch}) {
       setId(event.target.value)
    }
    return (
-      <div>
-         <input type='search' onChange={handleChange} value={id}/>
-         <button onClick={() => {onSearch(id); setId('')}}>Agregar</button>
+      <div className='searchBar'>
+         <input type='search' onChange={handleChange} value={id} placeholder='Agregar por ID'/>
+         <button onClick={() => {onSearch(id); setId('')}} >Agregar/ramdon</button>
       
       </div>
       

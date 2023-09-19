@@ -7,7 +7,10 @@ const {deleteFav, postFav} = require('../controllers/handleFovorites')
 router.get ('/character/:id', (req, res) =>{
     getCharById(req,res);
 })
-router.get ('/login', (req, res) => {
+// router.get ('/login', (req, res) => {
+//     login(req, res);
+// })
+router.post ('/login', (req, res) => {
     login(req, res);
 })
 router.post('/fav', (req, res) => {

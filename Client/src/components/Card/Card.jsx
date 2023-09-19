@@ -1,5 +1,4 @@
 import React from "react";
-import style from "./card.module.css";
 import { Link } from "react-router-dom";
 import { addFav, removeFav } from "../redux/actions";
 import { connect } from "react-redux";
@@ -31,7 +30,8 @@ class Card extends React.Component {
   }
   render() {
     return (
-      <div className={style.box} key={this.props.id}>
+      
+      <div  key={this.props.id} className="card">
         {this.state.isFav ? (
           <button onClick={() => {this.props.removeFav(this.props.id); this.setState({isFav: false})}} >❤️</button>
         ) : (
@@ -39,9 +39,9 @@ class Card extends React.Component {
         )}
         <button onClick={() => this.props.onClose(this.props.id)}>X</button>
 
-        <div className={style.info}>
+        <div className="info">
           <img
-            className={style.img}
+            
             src={this.props.image}
             alt={this.props.name}
           />
@@ -54,6 +54,7 @@ class Card extends React.Component {
           <h4>{this.props.origin}</h4>
         </div>
       </div>
+      
     );
   }
 }

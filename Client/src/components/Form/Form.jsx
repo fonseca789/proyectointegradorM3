@@ -1,6 +1,6 @@
 import style from "./form.module.css";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+// import { useNavigate } from "react-router-dom";
 import { validate } from "./validation";
 
 export default function Form({login}) {
@@ -13,8 +13,8 @@ export default function Form({login}) {
     email: "",
     password: "",
   });
-  const [access, setAccess] = useState(false);
-  const navigate = useNavigate();
+  // const [access, setAccess] = useState(false);
+  // const navigate = useNavigate();
   // const EMAIL = "correo@gmail.com";
   // const PASSWORD = "1password";
   //function
@@ -30,7 +30,8 @@ export default function Form({login}) {
       })
     );
   };
-  const haldleLogin = () => {
+  const haldleLogin = (event) => {
+    event.preventDefault()
     login(userData);
   };
   // const login = ({ email, password }) => {
@@ -81,7 +82,7 @@ export default function Form({login}) {
             <input type="checkbox" />
             Remember me
           </label>
-          <a href="#">Forgot Password?</a>
+          <a >Forgot Password?</a>
         </div>
         <button className="btnLogin" type="submit">
           Login
@@ -89,7 +90,7 @@ export default function Form({login}) {
         <div className={style.registerLink}>
           <p>
             Don't have an account?
-            <a href="#">Register</a>
+            <a >Register</a>
           </p>
         </div>
       </form>

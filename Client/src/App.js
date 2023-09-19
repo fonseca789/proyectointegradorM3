@@ -9,53 +9,56 @@ import Form from "./components/Form/Form";
 import Favorites from "./components/Favorites/Favorites.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFav } from "./components/redux/actions.js";
+
 function App() {
   //crear estado
   let [characters, setCharacters] = useState([]);
   const [access, setAccess] = useState(false);
 
-
   //datos de BD de Prueba
-  const EMAIL = "correo@gmail.com";
-  const PASSWORD = "1password";
-  const navigate  = useNavigate();
+  // const EMAIL = "correo@gmail.com";
+  // const PASSWORD = "1password";
+  const navigate = useNavigate();
   const location = useLocation();
 
   const dispatch = useDispatch();
   const myFavorites = useSelector((state) => state.myFavorites);
 
-
-  // // Funcion login con Express
+  // // Funcion login con Express esta parte esta mala me redirecciona a una url con
+  // datos que evio esta falla esta usando post y get por igual sospecho que es
+  //  backend quien causa el error
   const login = (userData) => {
     const { email, password } = userData;
     const URL = "http://localhost:3001/rickandmorty/login/";
     // axios(URL + `?email=${email}&password=${password}`).then(({ data }) => {
-    axios(`${URL}?email=${email}&password=${password}`).then(({ data }) => {
-      
-      const { access } = data;
-      if( access) {
-        alert("ok")
-        navigate("/home");
-        setAccess(true);
-      }
-      else{
-        setAccess(false);
-        alert("algo mal");
-      }
-      
-    });
+    // axios(`${URL}?email=${email}&password=${password}`).then(({ data }) => {
+    axios
+      .post(URL, {
+        email,
+        password,
+      })
+      .then(({ data }) => {
+        const { access } = data;
+        if (access) {
+          setAccess(true);
+          navigate("/home");
+        } else {
+          setAccess(false);
+          alert("algo mal");
+        }
+      });
   };
 
   // funcion VIeja
   // const login = ({ email, password }) => {
   //   if (email == EMAIL && password == PASSWORD) {
   //     setAccess(true);
-  //     alert("todo OK");
+  //     // alert("todo OK");
   //     navigate("/home");
   //   } else {
-  //     alert("algo mal");
+  //     alert("Verifique Usuario o Clave");
   //     // setUserData({ email: "", password: "" });
-  //     setAccess(false);
+  //     // setAccess(false);
 
   //   }
   // };
@@ -63,19 +66,25 @@ function App() {
     !access && navigate("/");
   }, [access]);
 
-
   const onSearch = (id) => {
     // const randomId= Math.floor(Math.random()* 826)+1;
     if (id) {
-      axios(`http://localhost:3001/rickandmorty/character/${id}`).then(
-        ({ data }) => {
+      axios(`http://localhost:3001/rickandmorty/character/${id}`)
+        .then(({ data }) => {
           if (data.name) {
-            setCharacters((oldChars) => [...oldChars, data]);          
+            const characterExists = characters.findIndex(charac => charac.id === Number(id))
+            
+            if (characterExists === -1) {
+              setCharacters((oldChars) => [...oldChars, data]);
+            } else
+              alert("este personaje ya esta en lista elije otro id: " + id);
           } else {
             alert("¡No hay personajes con este ID!");
           }
-        }
-      );
+        })
+        .catch(() => {
+          alert("Error al Consultar Id Personaje");
+        });
     } else randoCharacter();
   };
   const randoCharacter = () => {
@@ -113,16 +122,16 @@ function App() {
 
   return (
     <div className="App">
-      {verificarRuta() && <Nav onSearch={onSearch} ></Nav>}
+      {verificarRuta() && <Nav onSearch={onSearch}></Nav>}
       <Routes>
-        <Route path={"/"} element={<Form login = {login} />} />
+        <Route path={"/"} element={<Form login={login} />} />
         <Route
           path={"/home"}
           element={<Cards characters={characters} onClose={onClose} />}
         />
-        <Route path="about" element={<About />} />
+        <Route path="/about" element={<About />} />
         <Route path="/detail/:id" element={<Detail />} />
-        <Route path="favorites" element={<Favorites onClose={onClose} />} />
+        <Route path="/favorites" element={<Favorites onClose={onClose} />} />
       </Routes>
     </div>
   );

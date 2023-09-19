@@ -1,4 +1,4 @@
-import style from "./card.module.css";
+// import style from "./card.module.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";

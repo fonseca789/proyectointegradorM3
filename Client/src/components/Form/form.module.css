@@ -1,23 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins';
-}
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100vh;
-    background: url('../../images/625910.png') no-repeat;
-    background-size: cover;
-    background-position: center;
-    animation: animatebg 5s linear infinite;
-}
+
 @keyframes animatebg {
     100% {
         filter: hue-rotate(360deg);
@@ -34,19 +18,20 @@ body {
     justify-content: center;
     align-items: center;
     backdrop-filter: blur(15px);
+    font-family: "Poppins";
 }
-h2 {
+.loginBox h2 {
     font-size: 2em;
     color: #fff;
     text-align: center;
 }
-.inputBox {
+.loginBox .inputBox {
     position: relative;
     width: 310px;
     margin: 30px 0;
     border-bottom: 2px solid #fff;
 }
-.inputBox label {
+.loginBox .inputBox label {
     position: absolute;
     top: 50%;
     left: 50px;
@@ -56,11 +41,11 @@ h2 {
     pointer-events: none;
     transition: .5s;
 }
-.inputBox input:focus~label,
-.inputBox input:valid~label {
+.loginBox .inputBox input:focus~label,
+.loginBox .inputBox input:valid~label {
     top: -5px;
 }
-.inputBox input {
+.loginBox .inputBox input {
     width: 100%;
     height: 50px;
     background: transparent;
@@ -73,7 +58,7 @@ h2 {
 
 }
 
-.rememberForgot {
+.loginBox .rememberForgot {
     margin: -15px 0 15px;
     color: #fff;
     font-size: 0.9em;
@@ -81,19 +66,19 @@ h2 {
     justify-content: space-between;
 
 }
-.rememberForgot label input {
+.loginBox .rememberForgot label input {
     margin-right: 3px;
 
 }
-.rememberForgot a {
+.loginBox .rememberForgot a {
     color: #fff;
     text-decoration: none;
 
 }
-.rememberForgot a:hover {
+.loginBox .rememberForgot a:hover {
     text-decoration: underline;
 }
-.loginBox button  {
+.loginBox .loginBox button  {
     width: 100%;
     height: 40px;
     background: #fff;
@@ -102,21 +87,21 @@ h2 {
     color: #000;
     font-weight: 500;
 }
-.registerLink {
+.loginBox .registerLink {
     font-size: 0.9em;
     color: #fff;
     text-align: center;
     margin: 25px 0 10px;
 
 }
-.registerLink p a {
+.loginBox .registerLink p a {
     color: #fff;
     text-decoration: none;
     font-weight: 600;
 
 
 }
-.registerLink p a:hover {
+.loginBox .registerLink p a:hover {
     text-decoration: underline;
 }
 
