@@ -1,6 +1,6 @@
 import style from "./form.module.css";
 import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { validate } from "./validation";
 
 export default function Form({login}) {
@@ -68,7 +68,7 @@ export default function Form({login}) {
           <p id="#dangerPassword">{errors.password}</p>
           <input
             type="password"
-            placeholder=""
+            placeholder="8 Caracteres a 10 caracteres"
             name="password"
             required
             value={userData.password}
@@ -89,8 +89,10 @@ export default function Form({login}) {
         </button>
         <div className={style.registerLink}>
           <p>
-            Don't have an account?
-            <a >Register</a>
+            Don't have an account? <span> </span>
+           <Link to= {'/createuser'}>
+            <a >Register User</a>
+           </Link>
           </p>
         </div>
       </form>

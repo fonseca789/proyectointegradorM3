@@ -6,9 +6,11 @@ import Detail from "./components/Detail/Detail";
 import axios from "axios";
 import About from "./components/About/About";
 import Form from "./components/Form/Form";
+import UserCreate from "./components/UserCreate/UserCreate.jsx";
 import Favorites from "./components/Favorites/Favorites.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFav } from "./components/redux/actions.js";
+
 
 function App() {
   //crear estado
@@ -27,7 +29,7 @@ function App() {
   // // Funcion login con Express esta parte esta mala me redirecciona a una url con
   // datos que evio esta falla esta usando post y get por igual sospecho que es
   //  backend quien causa el error
-  const login = (userData) => {
+  const login = async(userData) => {
     const { email, password } = userData;
     const URL = "http://localhost:3001/rickandmorty/login/";
     // axios(URL + `?email=${email}&password=${password}`).then(({ data }) => {
@@ -48,32 +50,36 @@ function App() {
         }
       });
   };
+  const crearUser = async(userData) => {
+    const {email, password} = userData;
+    const URL = "http://localhost:3001/rickandmorty/usuario/";
+    axios.post(URL,{
+      email,
+      password
+    })
+    .then(({data}) => {
+      if(data.crearUserDone) {
+        navigate('/');
+      }
+      else {
+        navigate('/createuser');
+      }
+    }).catch(error => alert('Huvo un error'));
+  };
 
-  // funcion VIeja
-  // const login = ({ email, password }) => {
-  //   if (email == EMAIL && password == PASSWORD) {
-  //     setAccess(true);
-  //     // alert("todo OK");
-  //     navigate("/home");
-  //   } else {
-  //     alert("Verifique Usuario o Clave");
-  //     // setUserData({ email: "", password: "" });
-  //     // setAccess(false);
-
-  //   }
-  // };
   useEffect(() => {
     !access && navigate("/");
   }, [access]);
 
   const onSearch = (id) => {
-    // const randomId= Math.floor(Math.random()* 826)+1;
     if (id) {
       axios(`http://localhost:3001/rickandmorty/character/${id}`)
         .then(({ data }) => {
           if (data.name) {
-            const characterExists = characters.findIndex(charac => charac.id === Number(id))
-            
+            const characterExists = characters.findIndex(
+              (charac) => charac.id === Number(id)
+            );
+
             if (characterExists === -1) {
               setCharacters((oldChars) => [...oldChars, data]);
             } else
@@ -117,7 +123,12 @@ function App() {
     }
   };
   function verificarRuta() {
-    return location.pathname !== "/";
+    if(location.pathname !== "/" || location.pathname !== "/createuser") {
+      return true;
+    } else  {
+      return false;
+    }
+
   }
 
   return (
@@ -132,6 +143,10 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/favorites" element={<Favorites onClose={onClose} />} />
+        <Route
+          path="/createuser"
+          element={<UserCreate crearUser={crearUser}/>}
+        ></Route>
       </Routes>
     </div>
   );

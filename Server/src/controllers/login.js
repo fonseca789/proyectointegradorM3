@@ -1,19 +1,25 @@
-const users = require("../utils/users");
+const { User } = require("../DB_connection");
 
-const login = (req, res) => {
+const login = async (req, res) => {
+    // const { email, password } = req.query;
   const { email, password } = req.body;
-  // console.log(email, password);
-  
-  if (email) {
-    const findUser = users.find((user) => user.email === email);
-    if (findUser) {
-      if (email === findUser.email && password === findUser.password) {
-        res.status(200).json({ access: true });
-      } else res.status(200).json({ access: false });
-    } else res.status(400).json({ message: "User Not Found" });
-  } else {
-    res.status(400).json({ access: false });
+  if (!email || !password) {
+    res.status(400).send("Falta datos");
+    return
+  }
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      res.status(404).send("Email Not Registre");
+      return
+    }
+    if (user.password === password) {
+      res.json({ access: true });
+    } else {
+      res.status(403).json({access: false});
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
-
 module.exports = login;
