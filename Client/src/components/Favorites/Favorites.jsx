@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux/es/hooks/useSelector";
-import Card from "../Card/Card";
+import Card from "../Card/Card.func.jsx";
 // import style from "../Cards/cards.module.css";
 const Favorites = ({ onClose }) => {
   const myFavorites = useSelector((state) => state.myFavorites);
@@ -18,7 +18,7 @@ const Favorites = ({ onClose }) => {
                 status={character.status}
                 species={character.species}
                 gender={character.gender}
-                origin={character.origin.name}
+                origin={character.origin}
                 image={character.image}
                 onClose={onClose}
               />

@@ -1,4 +1,4 @@
-const { Favorite } = require("../DB_connection");
+const { Favorite, User } = require("../DB_connection");
 
 const postFav = async (req, res) => {
   const { name, origin, status, image, species, gender } = req.body;
@@ -6,23 +6,13 @@ const postFav = async (req, res) => {
     res.status(401).send("Falta Datos");
   }
   try {
-    const [favorite, created] = await Favorite.findOrCreate({
-      where: { name },
-      defaults: {
-        origin,
-        status,
-        image,
-        species,
-        gender,
-      },
+    const [favorite, created]=await Favorite.findOrCreate({
+      where: { name, origin, status, image, species, gender },
     });
-    if (created) {
-      const favorites = await Favorite.findAll();
-      res.status(201).json(favorites);
-    } else {
-      const favorites = await Favorite.findAll();
-      res.status(200).json(favorites);
-    }
+    const user = await User.findByPk(process.env.SESSION);
+    await user.addFavorites(favorite);
+    const favorites = await user.getFavorites();
+    res.status(200).json(favorites);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

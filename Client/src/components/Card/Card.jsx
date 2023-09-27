@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { addFav, removeFav } from "../redux/actions";
 import { connect } from "react-redux";
 
@@ -33,7 +33,7 @@ class Card extends React.Component {
       
       <div  key={this.props.id} className="card">
         {this.state.isFav ? (
-          <button onClick={() => {this.props.removeFav(this.props.id); this.setState({isFav: false})}} >❤️</button>
+          <button onClick={() => { this.setState({isFav: false})}} >❤️</button>
         ) : (
           <button onClick={() => {this.props.addFav(this.props); this.setState({isFav: true})}}>🤍</button>
         )}

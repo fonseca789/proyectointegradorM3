@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const server = express();
 const router = require("./routes/index");
-const PORT = 3001;
+const PORT = process.PORT || 3001;
 const { conn, User, Favorite } = require("./DB_connection");
 
 server.use((req, res, next) => {

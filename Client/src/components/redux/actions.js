@@ -28,3 +28,17 @@ export const removeFav = (id) => {
        });
     };
  };
+
+ // ACTION | getFav
+
+ export const getFav = () => {
+   const endpoint = 'http://localhost:3001/rickandmorty/fav/';
+   return (dispatch) => {
+      axios.get(endpoint).then(({ data }) => {
+         return dispatch({
+            type: 'GET_FAV',
+            payload: data,
+      });
+      }).catch((error) => alert(error.message))
+   };
+};

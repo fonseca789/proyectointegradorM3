@@ -5,9 +5,9 @@ module.exports = (sequelize) => {
     "Favorite",
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
-        autoIncrement: true,
       },
       name: {
         type: DataTypes.STRING,
@@ -15,7 +15,7 @@ module.exports = (sequelize) => {
         unique: true,
       },
       status: {
-        type: DataTypes.ENUM("Alive", "Dead", "Unknown"),
+        type: DataTypes.ENUM("Alive", "Dead", "unknown"),
         allowNull: false,
       },
       species: {

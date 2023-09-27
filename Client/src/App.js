@@ -9,27 +9,24 @@ import Form from "./components/Form/Form";
 import UserCreate from "./components/UserCreate/UserCreate.jsx";
 import Favorites from "./components/Favorites/Favorites.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFav } from "./components/redux/actions.js";
-
+import { getFav } from "./components/redux/actions.js";
 
 function App() {
   //crear estado
   let [characters, setCharacters] = useState([]);
   const [access, setAccess] = useState(false);
 
-  //datos de BD de Prueba
-  // const EMAIL = "correo@gmail.com";
-  // const PASSWORD = "1password";
   const navigate = useNavigate();
   const location = useLocation();
 
   const dispatch = useDispatch();
   const myFavorites = useSelector((state) => state.myFavorites);
+  
 
   // // Funcion login con Express esta parte esta mala me redirecciona a una url con
   // datos que evio esta falla esta usando post y get por igual sospecho que es
   //  backend quien causa el error
-  const login = async(userData) => {
+  const login = async (userData) => {
     const { email, password } = userData;
     const URL = "http://localhost:3001/rickandmorty/login/";
     // axios(URL + `?email=${email}&password=${password}`).then(({ data }) => {
@@ -43,28 +40,34 @@ function App() {
         const { access } = data;
         if (access) {
           setAccess(true);
+          dispatch(getFav());
           navigate("/home");
         } else {
           setAccess(false);
           alert("algo mal");
         }
+      })
+      .catch((error) => {
+        alert("Usuario/clave no registrada");
+        navigate("/createuser");
       });
   };
-  const crearUser = async(userData) => {
-    const {email, password} = userData;
+  const crearUser = async (userData) => {
+    const { email, password } = userData;
     const URL = "http://localhost:3001/rickandmorty/usuario/";
-    axios.post(URL,{
-      email,
-      password
-    })
-    .then(({data}) => {
-      if(data.crearUserDone) {
-        navigate('/');
-      }
-      else {
-        navigate('/createuser');
-      }
-    }).catch(error => alert('Huvo un error'));
+    axios
+      .post(URL, {
+        email,
+        password,
+      })
+      .then(({ data }) => {
+        if (data.crearUserDone) {
+          navigate("/");
+        } else {
+          navigate("/createuser");
+        }
+      })
+      .catch((error) => alert("Huvo un error"));
   };
 
   useEffect(() => {
@@ -110,25 +113,14 @@ function App() {
   };
 
   const onClose = (id) => {
-    let charactersFiltered = characters.filter(
+     characters.filter(
       (character) => character.id !== Number(id)
     );
-    setCharacters(charactersFiltered);
-    const findFavorite = myFavorites.find((favorite) => {
-      return favorite.id === Number(id);
-    });
-
-    if (findFavorite) {
-      dispatch(removeFav(id));
-    }
   };
   function verificarRuta() {
-    if(location.pathname !== "/" || location.pathname !== "/createuser") {
-      return true;
-    } else  {
-      return false;
-    }
-
+    if (location.pathname === "/") return false;
+    if (location.pathname === "/createuser") return false;
+    else return true;
   }
 
   return (
@@ -145,7 +137,7 @@ function App() {
         <Route path="/favorites" element={<Favorites onClose={onClose} />} />
         <Route
           path="/createuser"
-          element={<UserCreate crearUser={crearUser}/>}
+          element={<UserCreate crearUser={crearUser} />}
         ></Route>
       </Routes>
     </div>
